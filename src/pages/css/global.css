@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --default-red: #ef476f;
+  --default-green: #06d6a0;
+  --default-yellow: #ffd166;
+  --default-blue: #118ab2;
+  --default-dark-green: #073b4c;
+  --light-gray: #b4b4b4;
+  --default-text-color: #495057;
+  --signin-background-color: #fafafa;
+  --white: #fff;
+}
+
+h1 {
+  color: #000;
+}
+h2 {
+  color: var(--default-text-color);
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Signika !important;
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+}
+
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url("https://media.giphy.com/media/3ov9jP8JUJk0QzK2t2/giphy.gif");
+  animation: starsAnimation 100s linear infinite;
+}
+
+@keyframes starsAnimation {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+}
