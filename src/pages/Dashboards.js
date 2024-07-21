@@ -7,8 +7,11 @@ import Design from "./icons/Design";
 import Marketing from "./icons/Marketing";
 import Edicao from "./icons/Edicao";
 import Consultoria from "./icons/Consultoria";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboards() {
+  const navigate = useNavigate();
+
   const [films, setFilms] = useState([]);
   const [resultsCount, setResultsCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -43,7 +46,7 @@ export default function Dashboards() {
             onClick={toggleDropdown}
             style={{ marginLeft: "auto", userSelect: "none" }}
           >
-            Profile
+            Perfil
           </span>
           <div className="wrapper">
             <div
@@ -52,7 +55,13 @@ export default function Dashboards() {
             >
               <ul>
                 <li>
-                  <a href="crud/add.php">Tornece um prestador</a>
+                  <a
+                    onClick={() => {
+                      navigate("/criar-vaga");
+                    }}
+                  >
+                    Tornece um prestador
+                  </a>
                 </li>
                 <li style={{ color: "#ef476f", borderBottom: "none" }}>
                   Logout
@@ -67,8 +76,9 @@ export default function Dashboards() {
           <h1>
             Encontre o
             <span style={{ color: "var(--default-green)" }}>
+              {" "}
               serviço de freelance
-            </span>
+            </span>{" "}
             que você precisa agora mesmo
           </h1>
           <input
@@ -116,7 +126,7 @@ export default function Dashboards() {
           <div className="white-svg">
             <Edicao />
           </div>
-          <h2>Marketing</h2>
+          <h2>Edição de Vídeo</h2>
         </div>
 
         <div

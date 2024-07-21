@@ -1,0 +1,106 @@
+.container {
+  background-color: var(--signin-background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  border: 1 px solid (--light-gray);
+  border-radius: 15px;
+  background-color: var(--white);
+}
+
+form {
+  width: 100%;
+  height: auto;
+  padding: 40px;
+}
+
+form h2 {
+  margin: 10px;
+}
+
+input[type="text"],
+textarea {
+  outline: none;
+  appearance: none;
+  width: 98.4%;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: var(--white);
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: var(--default-green);
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  margin: 30px 0 30px 0;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--default-green);
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: var(
+    --default-green-with-overlay
+  ); /* Alterado para branco */
+}
+
+.select-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilizar o label */
+.select-label {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Estilizar o select */
+.select-input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: var(--white);
+  color: #333;
+  appearance: none; /* Remove o estilo padrão do navegador */
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+/* Estilizar o select ao focar */
+.select-input:focus {
+  border-color: var(--default-green);
+  outline: none;
+}
+
+/* Estilizar o texto da opção selecionada */
+.selected-option {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #007bff;
+}

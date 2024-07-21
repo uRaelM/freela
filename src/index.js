@@ -2,10 +2,31 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { Toaster } from "react-hot-toast";
+
+const ToasterOptions = {
+  success: {
+    style: {
+      background: "#28a745", // Verde de sucesso
+      color: "white",
+      fontSize: "1.2rem",
+      padding: "16px",
+    },
+  },
+  error: {
+    style: {
+      background: "#dc3545", // Vermelho de erro
+      color: "white",
+      fontSize: "1.2rem",
+      padding: "16px",
+    },
+  },
+};
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <Toaster toastOptions={ToasterOptions} />
     <App />
   </React.StrictMode>
 );

@@ -73,8 +73,7 @@ form {
   width: 100%;
 }
 
-input[type="text"],
-input[type="password"] {
+input {
   width: 97.5%;
   padding: 10px;
   margin-bottom: 10px;
