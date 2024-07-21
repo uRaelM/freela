@@ -8,69 +8,32 @@ import Marketing from "./icons/Marketing";
 import Edicao from "./icons/Edicao";
 import Consultoria from "./icons/Consultoria";
 import { useNavigate } from "react-router-dom";
+import { db, collection, getDocs } from "../context/firebase";
+
+import Header from "../components/header";
 
 export default function Dashboards() {
   const navigate = useNavigate();
 
-  const [films, setFilms] = useState([]);
-  const [resultsCount, setResultsCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsVisible(!isVisible);
-  };
+  const [vagas, setVagas] = useState([]);
 
   useEffect(() => {
-    // Substitua a URL pela sua API
-    fetch("/api/films")
-      .then((response) => response.json())
-      .then((data) => {
-        setFilms(data);
-        setResultsCount(data.length);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+    const fetchData = async () => {
+      try {
+        const vagasCollection = collection(db, "vagas");
+        const vagasSnapshot = await getDocs(vagasCollection);
+        setVagas(vagasSnapshot.docs.map((doc) => doc.data()));
+      } catch (error) {
+        console.error("Error fetching vagas: ", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <>
-      <header>
-        <div className="header-content">
-          <span className="logo">
-            Freela
-            <span style={{ color: "var(--default-green)", fontSize: "3rem" }}>
-              .
-            </span>
-          </span>
-          <span
-            className="profile"
-            onClick={toggleDropdown}
-            style={{ marginLeft: "auto", userSelect: "none" }}
-          >
-            Perfil
-          </span>
-          <div className="wrapper">
-            <div
-              id="DropDown"
-              className={`dropdown ${isVisible ? "" : "hidden"}`}
-            >
-              <ul>
-                <li>
-                  <a
-                    onClick={() => {
-                      navigate("/criar-vaga");
-                    }}
-                  >
-                    Tornece um prestador
-                  </a>
-                </li>
-                <li style={{ color: "#ef476f", borderBottom: "none" }}>
-                  Logout
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
       <section id="banner">
         <div className="banner">
           <h1>
@@ -92,16 +55,21 @@ export default function Dashboards() {
       <h1 className="cardstext">Os mais procurados</h1>
 
       <section id="cards">
-        <div className="card" style={{ backgroundColor: "var(--default-red)" }}>
+        <div
+          className="card"
+          style={{ backgroundColor: "var(--default-red)" }}
+          onClick={() => navigate("/tecnologia")}
+        >
           <div className="white-svg">
             <Programacao />
           </div>
-          <h2>Programação</h2>
+          <h2>Tecnologia</h2>
         </div>
 
         <div
           className="card"
           style={{ backgroundColor: "var(--default-yellow)" }}
+          onClick={() => navigate("/design")}
         >
           <div className="white-svg">
             <Design />
@@ -112,6 +80,7 @@ export default function Dashboards() {
         <div
           className="card"
           style={{ backgroundColor: "var(--default-green)" }}
+          onClick={() => navigate("/marketing")}
         >
           <div className="white-svg">
             <Marketing />
@@ -122,6 +91,7 @@ export default function Dashboards() {
         <div
           className="card"
           style={{ backgroundColor: "var(--default-blue)" }}
+          onClick={() => navigate("/edicao")}
         >
           <div className="white-svg">
             <Edicao />
@@ -132,6 +102,7 @@ export default function Dashboards() {
         <div
           className="card"
           style={{ backgroundColor: "var(--default-dark-green)" }}
+          onClick={() => navigate("/consultoria")}
         >
           <div className="white-svg">
             <Consultoria />
@@ -141,7 +112,7 @@ export default function Dashboards() {
       </section>
 
       <section id="textresults">
-        <h3>{resultsCount} resultados encontrados</h3>
+        <h3>{vagas.length} resultados encontrados</h3>
         <h4>
           Ordenado por:{" "}
           <span style={{ color: "#000000", marginInline: "10px" }}>
@@ -152,14 +123,48 @@ export default function Dashboards() {
 
       <main>
         <div id="proposals">
-          {films.map((film, index) => (
+          {vagas.map((vaga, index) => (
             <div className="proposal" key={index}>
-              <img src={film.thumbnail} alt="Thumbnail" />
-              <h3>{film.title}</h3>
-              <p>Year: {film.year}</p>
-              <p>Rating: {film.rating}</p>
-              <a href={`edit.php?id=${film.id}`}>EDIT</a>
-              <a href={`delete.php?id=${film.id}`}>DELETE</a>
+              <img src={vaga.capa} alt="Thumbnail" />
+              <p style={{ color: "black", fontWeight: "bold" }}>
+                <span
+                  style={{
+                    color: "var(--default-text-color)",
+                    fontWeight: "400",
+                  }}
+                >
+                  Anúncio por:{" "}
+                </span>
+                {vaga.nomeUsuario}
+              </p>
+              <h3
+                style={{
+                  color: "var(--default-text-color)",
+                }}
+              >
+                {vaga.titulo}
+              </h3>
+              <p
+                style={{
+                  color: "var(--default-text-color)",
+                  fontSize: ".9rem",
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {vaga.descricao}
+              </p>
+              <p
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "1.1rem",
+                }}
+              >
+                A partir de R$ {vaga.preco}
+              </p>
             </div>
           ))}
         </div>

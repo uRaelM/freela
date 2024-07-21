@@ -3,6 +3,7 @@ header {
   background-color: white;
   width: 100%;
   border-bottom: 1px solid #c6c6c6;
+  z-index: 1000;
 }
 
 .header-content {
@@ -18,6 +19,7 @@ header {
   font-weight: bold;
   font-size: 2rem;
   color: #073b4c;
+  user-select: none;
 }
 
 .profile {
@@ -98,6 +100,7 @@ section {
   font-size: 3rem;
   font-weight: 100;
   color: white;
+  user-select: none;
 }
 
 .banner input[type="text"] {
@@ -105,6 +108,7 @@ section {
   padding: 20px;
   border: none;
   border-radius: 15px;
+  cursor: auto;
 }
 
 #cards {
@@ -163,10 +167,23 @@ section {
 }
 
 .proposal {
+  height: 400px;
   padding: 10px;
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.proposal:hover {
+  border: 2px solid var(--default-green);
+}
+
+.proposal a:hover {
+  border-bottom: 2px solid black;
 }
 
 .proposal img {
@@ -187,6 +204,7 @@ section {
 }
 
 footer {
+  margin-top: 40px;
   width: 100%;
   background-color: var(--default-dark-green);
   display: flex;

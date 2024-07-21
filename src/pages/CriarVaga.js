@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { setDoc, doc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "../context/firebase";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import "./css/criarvaga.css";
 
@@ -17,11 +17,13 @@ export default function CriarVaga() {
   const [descricao, setDescricao] = useState("");
   const [tipo, setTipo] = useState("");
   const [preco, setPreco] = useState("");
+  const [user, setUser] = useState("");
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        setUser(user);
         setUserId(user.uid);
       } else {
         setUserId(null);
@@ -47,14 +49,14 @@ export default function CriarVaga() {
       }
 
       // Cria um novo documento na coleção "vagas" com um ID gerado automaticamente
-      const docRef = doc(db, "vagas", `${titulo}-${new Date().getTime()}`);
-      await setDoc(docRef, {
+      await addDoc(collection(db, "vagas"), {
         titulo,
         capa,
         descricao,
         tipo,
         preco,
         IdUsuario: userId,
+        nomeUsuario: user.displayName,
       });
 
       toast.success("Vaga criada com sucesso!", {
@@ -74,7 +76,7 @@ export default function CriarVaga() {
   };
 
   return (
-    <div className="container">
+    <div className="container-criar-vaga">
       <main className="container-main">
         <form onSubmit={handleSubmit}>
           <h2>Título</h2>
@@ -107,7 +109,7 @@ export default function CriarVaga() {
             <option value="" disabled>
               Selecione...
             </option>
-            <option value="programacao">Programação</option>
+            <option value="tecnologia">Tecnologia</option>
             <option value="design">Design</option>
             <option value="marketing">Marketing</option>
             <option value="edicao-video">Edição de vídeo</option>

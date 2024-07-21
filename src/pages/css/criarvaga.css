@@ -1,4 +1,4 @@
-.container {
+.container-criar-vaga {
   background-color: var(--signin-background-color);
   display: flex;
   justify-content: center;
@@ -14,55 +14,6 @@
   border: 1 px solid (--light-gray);
   border-radius: 15px;
   background-color: var(--white);
-}
-
-form {
-  width: 100%;
-  height: auto;
-  padding: 40px;
-}
-
-form h2 {
-  margin: 10px;
-}
-
-input[type="text"],
-textarea {
-  outline: none;
-  appearance: none;
-  width: 98.4%;
-  padding: 10px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-  background-color: var(--white);
-  color: #333;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus,
-textarea:focus {
-  border-color: var(--default-green);
-}
-
-input[type="submit"] {
-  width: 100%;
-  padding: 15px;
-  margin: 30px 0 30px 0;
-  border-radius: 5px;
-  border: none;
-  background-color: var(--default-green);
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-input[type="submit"]:hover {
-  background-color: var(
-    --default-green-with-overlay
-  ); /* Alterado para branco */
 }
 
 .select-container {

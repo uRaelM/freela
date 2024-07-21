@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginVideo from "../public/loginvideo.mp4";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../context/firebase";
 import toast, { Toaster } from "react-hot-toast";
@@ -33,6 +33,11 @@ export default function Cadastro() {
       );
       const user = userCredential.user;
 
+      // Atualiza o displayName do usuário
+      await updateProfile(user, {
+        displayName: name,
+      });
+
       // Adiciona informações do usuário no Firestore
       const userRef = doc(db, "usuarios", user.uid);
       await setDoc(userRef, {
@@ -54,11 +59,20 @@ export default function Cadastro() {
       return user;
     } catch (error) {
       setCarregando(false);
-      toast.error("Erro ao criar usuário", {
-        duration: 4000,
-        position: "top-center",
-      });
-      console.error("Erro ao criar usuário:", error.message);
+
+      if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+        toast.error("Email já cadastrado", {
+          duration: 4000,
+          position: "top-center",
+        });
+      } else {
+        toast.error("Erro ao criar usuário", {
+          duration: 4000,
+          position: "top-center",
+        });
+      }
+
+      console.error(error.message);
     }
   };
 
@@ -90,7 +104,7 @@ export default function Cadastro() {
               Porfavor preencha com seu nome completo, email e senha para criar
               a sua conta.
             </h2>
-            <label>Nome Completo</label>
+            <label>Nome de Exibição</label>
             <input
               type="text"
               value={name}
