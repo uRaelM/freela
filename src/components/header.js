@@ -40,7 +40,7 @@ export default function Header() {
   return (
     <header>
       <div className="header-content">
-        <span className="logo">
+        <span className="logo" onClick={() => navigate("/")}>
           Freela
           <span style={{ color: "var(--default-green)", fontSize: "3rem" }}>
             .

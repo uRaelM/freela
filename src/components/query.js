@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { db, collection, getDocs } from "../context/firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function Query({ tipo }) {
+  const navigate = useNavigate();
   const [vagas, setVagas] = useState([]);
   const [numVagas, setNumVagas] = useState(0);
 
@@ -10,10 +12,13 @@ export default function Query({ tipo }) {
       try {
         const vagasCollection = collection(db, "vagas");
         const vagasSnapshot = await getDocs(vagasCollection);
-        const vagasData = vagasSnapshot.docs.map((doc) => doc.data());
-        setVagas(vagasData);
+        const vagasArray = vagasSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setVagas(vagasArray);
 
-        const consultoriaCount = vagasData.filter(
+        const consultoriaCount = vagasArray.filter(
           (vaga) => vaga.tipo === tipo
         ).length;
         setNumVagas(consultoriaCount);
@@ -41,7 +46,13 @@ export default function Query({ tipo }) {
         <div id="proposals">
           {vagas.map((vaga, index) =>
             vaga.tipo === tipo ? (
-              <div className="proposal" key={index}>
+              <div
+                className="proposal"
+                key={index}
+                onClick={() => {
+                  navigate(`/vaga/${vaga.id}`);
+                }}
+              >
                 <img src={vaga.capa} alt="Thumbnail" />
                 <p style={{ color: "black", fontWeight: "bold" }}>
                   <span

@@ -101,7 +101,7 @@ export default function Cadastro() {
           <form onSubmit={handleSubmit}>
             <h1>Cadastro</h1>
             <h2>
-              Porfavor preencha com seu nome completo, email e senha para criar
+              Por favor preencha com seu nome completo, email e senha para criar
               a sua conta.
             </h2>
             <label>Nome de Exibição</label>

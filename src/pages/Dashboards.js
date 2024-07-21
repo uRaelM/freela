@@ -22,7 +22,11 @@ export default function Dashboards() {
       try {
         const vagasCollection = collection(db, "vagas");
         const vagasSnapshot = await getDocs(vagasCollection);
-        setVagas(vagasSnapshot.docs.map((doc) => doc.data()));
+        const vagasArray = vagasSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setVagas(vagasArray);
       } catch (error) {
         console.error("Error fetching vagas: ", error);
       }
@@ -124,7 +128,13 @@ export default function Dashboards() {
       <main>
         <div id="proposals">
           {vagas.map((vaga, index) => (
-            <div className="proposal" key={index}>
+            <div
+              className="proposal"
+              key={index}
+              onClick={() => {
+                navigate(`/vaga/${vaga.id}`);
+              }}
+            >
               <img src={vaga.capa} alt="Thumbnail" />
               <p style={{ color: "black", fontWeight: "bold" }}>
                 <span

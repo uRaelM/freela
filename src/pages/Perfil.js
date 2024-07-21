@@ -39,8 +39,6 @@ export default function Perfil() {
     return () => unsubscribe();
   }, [navigate, userId]);
 
-  console.log(vagas);
-
   useEffect(() => {
     const fetchData = async () => {
       try {

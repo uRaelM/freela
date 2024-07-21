@@ -10,6 +10,7 @@ import EdicaoQuery from "./pages/Edicao";
 import ConsultoriaQuery from "./pages/Consultoria";
 import Perfil from "./pages/Perfil";
 import EditarVaga from "./pages/EditarVaga";
+import Vaga from "./pages/Vaga";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/consultoria" element={<ConsultoriaQuery />} />
         <Route path="/perfil/:userId" element={<Perfil />} />
         <Route path="/editar-vaga/:vagaId" element={<EditarVaga />} />
+        <Route path="/vaga/:vagaId" element={<Vaga />} />
       </Routes>
     </Router>
   );
