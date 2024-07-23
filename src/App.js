@@ -26,7 +26,10 @@ function App() {
         <Route path="/edicao" element={<EdicaoQuery />} />
         <Route path="/consultoria" element={<ConsultoriaQuery />} />
         <Route path="/perfil/:userId" element={<Perfil />} />
-        <Route path="/editar-vaga/:vagaId" element={<EditarVaga />} />
+        <Route
+          path="/perfil/:userId/editar-vaga/:vagaId"
+          element={<EditarVaga />}
+        />
         <Route path="/vaga/:vagaId" element={<Vaga />} />
       </Routes>
     </Router>

@@ -2,10 +2,12 @@ import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "../context/firebase";
 import toast from "react-hot-toast";
+
+// functions
+import { VagaUpdate } from "../functions/VagaUpdate";
 
 export default function EditarVaga() {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ export default function EditarVaga() {
   const [vaga, setVaga] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   const [titulo, setTitulo] = useState(null);
   const [capa, setCapa] = useState(null);
@@ -25,6 +28,7 @@ export default function EditarVaga() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        setUser(user);
       } else {
         toast.error("Sessao inválida", {
           duration: 4000,
@@ -79,14 +83,7 @@ export default function EditarVaga() {
     e.preventDefault();
 
     try {
-      const vagaDocRef = doc(db, "vagas", vagaId);
-      await updateDoc(vagaDocRef, {
-        titulo,
-        capa,
-        descricao,
-        tipo,
-        preco,
-      });
+      VagaUpdate(titulo, capa, descricao, tipo, preco, vagaId);
 
       toast.success("Vaga atualizada com sucesso!", {
         duration: 3000,
@@ -94,7 +91,7 @@ export default function EditarVaga() {
       });
 
       setTimeout(() => {
-        navigate("/");
+        navigate(`/perfil/${user.uid}`);
       }, 1000);
     } catch (error) {
       toast.error("Erro ao atualizar vaga", {
@@ -113,6 +110,7 @@ export default function EditarVaga() {
             <form onSubmit={handleUpdate}>
               <h2>Título</h2>
               <input
+                required
                 type="text"
                 placeholder="Digite o título aqui..."
                 value={titulo}
@@ -120,6 +118,7 @@ export default function EditarVaga() {
               />
               <h2>Foto de capa</h2>
               <input
+                required
                 type="text"
                 placeholder="Coloque o link de uma imagem aqui..."
                 value={capa}
@@ -127,6 +126,7 @@ export default function EditarVaga() {
               />
               <h2>Descrição</h2>
               <textarea
+                required
                 rows="10"
                 placeholder="Digite sua descrição aqui..."
                 value={descricao}
@@ -134,6 +134,7 @@ export default function EditarVaga() {
               />
               <h2>Tipo</h2>
               <select
+                required
                 className="select-input"
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value)}
@@ -149,8 +150,9 @@ export default function EditarVaga() {
               </select>
               <h2>Preço</h2>
               <input
+                required
                 placeholder="Digite o preço do seu serviço"
-                type="text"
+                type="number"
                 value={preco}
                 onChange={(e) => setPreco(e.target.value)}
               />

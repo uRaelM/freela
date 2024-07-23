@@ -59,7 +59,7 @@ export default function Vaga() {
         <div
           style={{
             height: "100%",
-            marginTop: "6rem",
+            marginTop: "3rem",
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
           }}

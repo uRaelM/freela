@@ -184,7 +184,11 @@ section {
 }
 
 .proposal a:hover {
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid var(--default-dark-green);
+}
+
+.excluir:hover {
+  border-bottom: 2px solid var(--default-red);
 }
 
 .proposal img {

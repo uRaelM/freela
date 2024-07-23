@@ -1,5 +1,6 @@
 import LoginVideo from "../public/loginvideo.mp4";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
@@ -10,11 +11,13 @@ import {
   where,
   getDocs,
 } from "../context/firebase";
-import { doc, deleteDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import toast from "react-hot-toast";
 
+import { VagaDelete } from "../functions/VagaDelete";
+
 export default function Perfil() {
+  const location = useLocation();
   const navigate = useNavigate();
   const { userId } = useParams();
   const [vagas, setVagas] = useState([]);
@@ -63,17 +66,19 @@ export default function Perfil() {
   }, [userId]);
 
   const excluirVaga = async (vagaId) => {
-    try {
-      // Cria uma referência ao documento da vaga que você deseja excluir
-      const vagaRef = doc(db, "vagas", vagaId);
+    const result = await VagaDelete(vagaId);
 
-      // Remove o documento
-      await deleteDoc(vagaRef);
-
+    if (result) {
+      console.error("Erro ao excluir a vaga: ", result);
+    } else {
+      toast.success("Vaga excluida com sucesso!", {
+        duration: 3000,
+        position: "top-center",
+      });
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
       window.location.reload();
-      console.log("Vaga excluída com sucesso");
-    } catch (error) {
-      console.error("Erro ao excluir a vaga: ", error);
     }
   };
 
@@ -160,11 +165,12 @@ export default function Perfil() {
                         fontWeight: "bold",
                         color: "var(--default-dark-green)",
                       }}
-                      href={`/editar-vaga/${vaga.id}`}
+                      href={`${location.pathname}/editar-vaga/${vaga.id}`}
                     >
                       Editar
                     </a>
                     <span
+                      className="excluir"
                       style={{
                         fontWeight: "bold",
                         color: "var(--default-red)",

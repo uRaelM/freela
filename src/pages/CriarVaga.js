@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, addDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { db } from "../context/firebase";
 import toast from "react-hot-toast";
+
+import { VagaCreate } from "../functions/VagaCreate";
 
 import "./css/criarvaga.css";
 
@@ -49,15 +49,7 @@ export default function CriarVaga() {
       }
 
       // Cria um novo documento na coleção "vagas" com um ID gerado automaticamente
-      await addDoc(collection(db, "vagas"), {
-        titulo,
-        capa,
-        descricao,
-        tipo,
-        preco,
-        IdUsuario: userId,
-        nomeUsuario: user.displayName,
-      });
+      VagaCreate(titulo, capa, descricao, tipo, preco, userId, user);
 
       toast.success("Vaga criada com sucesso!", {
         duration: 3000,
@@ -81,6 +73,7 @@ export default function CriarVaga() {
         <form onSubmit={handleSubmit}>
           <h2>Título</h2>
           <input
+            required
             type="text"
             placeholder="Digite o título aqui..."
             value={titulo}
@@ -88,6 +81,7 @@ export default function CriarVaga() {
           />
           <h2>Foto de capa</h2>
           <input
+            required
             type="text"
             placeholder="Coloque o link de uma imagem aqui..."
             value={capa}
@@ -95,6 +89,7 @@ export default function CriarVaga() {
           />
           <h2>Descrição</h2>
           <textarea
+            required
             rows="10"
             placeholder="Digite sua descrição aqui..."
             value={descricao}
@@ -102,6 +97,7 @@ export default function CriarVaga() {
           />
           <h2>Tipo</h2>
           <select
+            required
             className="select-input"
             value={tipo}
             onChange={(e) => setTipo(e.target.value)}
@@ -117,8 +113,9 @@ export default function CriarVaga() {
           </select>
           <h2>Preço</h2>
           <input
+            required
             placeholder="Digite o preço do seu serviço"
-            type="text"
+            type="number"
             value={preco}
             onChange={(e) => setPreco(e.target.value)}
           />

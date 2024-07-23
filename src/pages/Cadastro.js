@@ -4,7 +4,7 @@ import LoginVideo from "../public/loginvideo.mp4";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../context/firebase";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import "./css/global.css";
 import "./css/sign.css";
@@ -86,7 +86,7 @@ export default function Cadastro() {
       </div>
       <div class="rightContainer">
         <div class="rightContent">
-          <button class="backButton">
+          <button class="backButton" onClick={navigate("/")}>
             <svg
               class="icon"
               viewBox="0 0 512 512"
