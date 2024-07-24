@@ -12,6 +12,7 @@
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.25.1",
     "react-scripts": "^5.0.1",
+    "react-tools": "^0.13.3",
     "web-vitals": "^2.1.4",
     "webpack": "^5.93.0"
   },
