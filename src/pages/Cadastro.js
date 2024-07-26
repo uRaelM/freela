@@ -24,55 +24,56 @@ export default function Cadastro() {
 
   const registerUser = async (email, password, name) => {
     setCarregando(true);
-    try {
-      // Cria o usuário no Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
 
-      // Atualiza o displayName do usuário
-      await updateProfile(user, {
-        displayName: name,
-      });
-
-      // Adiciona informações do usuário no Firestore
-      const userRef = doc(db, "usuarios", user.uid);
-      await setDoc(userRef, {
-        email: user.email,
-        name: name,
-      });
-
-      toast.success("Usuário criado e adicionado com sucesso!", {
+    if (email.includes(".gmail")) {
+      try {
+        // Cria o usuário no Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+        // Atualiza o displayName do usuário
+        await updateProfile(user, {
+          displayName: name,
+        });
+        // Adiciona informações do usuário no Firestore
+        const userRef = doc(db, "usuarios", user.uid);
+        await setDoc(userRef, {
+          email: user.email,
+          name: name,
+        });
+        toast.success("Usuário criado e adicionado com sucesso!", {
+          duration: 3000,
+          position: "top-center",
+        });
+        console.log("Usuário criado e adicionado com sucesso:", user.uid);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+        return user;
+      } catch (error) {
+        setCarregando(false);
+        if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+          toast.error("Email já cadastrado", {
+            duration: 4000,
+            position: "top-center",
+          });
+        } else {
+          toast.error("Erro ao criar usuário", {
+            duration: 4000,
+            position: "top-center",
+          });
+        }
+        console.error(error.message);
+      }
+    } else {
+      setCarregando(false);
+      toast.error("Utilize um email do Gmail", {
         duration: 3000,
         position: "top-center",
       });
-
-      console.log("Usuário criado e adicionado com sucesso:", user.uid);
-
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
-
-      return user;
-    } catch (error) {
-      setCarregando(false);
-
-      if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-        toast.error("Email já cadastrado", {
-          duration: 4000,
-          position: "top-center",
-        });
-      } else {
-        toast.error("Erro ao criar usuário", {
-          duration: 4000,
-          position: "top-center",
-        });
-      }
-
-      console.error(error.message);
     }
   };
 
@@ -89,7 +90,7 @@ export default function Cadastro() {
           <form onSubmit={handleSubmit}>
             <h1>Cadastro</h1>
             <h2>
-              Por favor preencha com seu nome completo, email e senha para criar
+              Por favor preencha com seu nome completo, Gmail e senha para criar
               a sua conta.
             </h2>
             <label>Nome de Exibição</label>
@@ -105,7 +106,7 @@ export default function Cadastro() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
+              placeholder="Email do Gmail"
               required
             />
             <label>Senha</label>

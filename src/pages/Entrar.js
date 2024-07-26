@@ -22,6 +22,7 @@ export default function Cadastro() {
 
   const loginUser = async (email, password) => {
     setCarregando(true);
+
     try {
       // Cria o usuário no Firebase Authentication
       const userCredential = await signInWithEmailAndPassword(
