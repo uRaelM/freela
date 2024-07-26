@@ -92,7 +92,7 @@ export default function EditarVaga() {
 
       setTimeout(() => {
         navigate(`/perfil/${user.uid}`);
-      }, 1000);
+      }, 2000);
     } catch (error) {
       toast.error("Erro ao atualizar vaga", {
         duration: 4000,

@@ -32,7 +32,7 @@ export default function Cadastro() {
       const user = userCredential.user;
 
       toast.success("Login realizado com sucesso!", {
-        duration: 1000, // 6000 milissegundos = 6 segundos
+        duration: 2000,
         position: "top-center",
       });
 
@@ -40,7 +40,7 @@ export default function Cadastro() {
 
       setTimeout(() => {
         navigate("/");
-      }, 1000);
+      }, 2000);
 
       return user;
     } catch (error) {

@@ -57,7 +57,7 @@ export default function CriarVaga() {
       });
       setTimeout(() => {
         navigate("/");
-      }, 1000);
+      }, 2000);
     } catch (error) {
       toast.error("Erro ao criar vaga", {
         duration: 4000,

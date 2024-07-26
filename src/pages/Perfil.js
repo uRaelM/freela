@@ -77,7 +77,7 @@ export default function Perfil() {
       });
       setTimeout(() => {
         navigate("/");
-      }, 1000);
+      }, 2000);
       window.location.reload();
     }
   };

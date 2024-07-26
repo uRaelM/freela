@@ -4,18 +4,43 @@ import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { db } from "../context/firebase";
 import toast from "react-hot-toast";
+import emailjs from "emailjs-com";
+
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import Header from "../components/header";
 
 export default function Vaga() {
+  const emailServiceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+  const emailTemplateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+  const emailUserId = process.env.REACT_APP_EMAILJS_USER_ID;
+
   const navigate = useNavigate();
+  const auth = getAuth();
+
+  const [user, setUser] = useState("");
 
   const { vagaId } = useParams();
   const [vaga, setVaga] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [mensagem, setMensagem] = useState(null);
+  const [usuarioNome, setUsuarioNome] = useState("");
+  const [usuarioEmail, setUsuarioEmail] = useState("");
+  const [prestadorEmail, setPrestadorEmail] = useState("");
+  const [mensagem, setMensagem] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUsuarioNome(user.displayName);
+        setUsuarioEmail(user.email);
+        setUser(user);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [auth, navigate]);
 
   useEffect(() => {
     const fetchVaga = async () => {
@@ -23,6 +48,7 @@ export default function Vaga() {
         const vagaDoc = doc(db, "vagas", vagaId);
         const vagaSnapshot = await getDoc(vagaDoc);
         if (vagaSnapshot.exists()) {
+          setPrestadorEmail(vagaSnapshot.data().email);
           setVaga(vagaSnapshot.data());
         } else {
           console.error("No such document!");
@@ -50,7 +76,59 @@ export default function Vaga() {
     });
   }
 
-  console.log(vaga);
+  const enviarEmail = async () => {
+    if (!mensagem) {
+      toast.error(`Mensagem não pode ser vazia`, {
+        duration: 4000,
+        position: "top-center",
+      });
+    } else if (user) {
+      const templateParams = {
+        assunto: vaga.titulo,
+        mensagem: mensagem,
+        nome_usuario: usuarioNome,
+        prestador_email: prestadorEmail,
+        usuario_email: usuarioEmail,
+      };
+
+      console.log(templateParams);
+
+      try {
+        emailjs
+          .send(emailServiceId, emailTemplateId, templateParams, emailUserId)
+          .then(
+            (response) => {
+              toast.success(
+                "Email enviado para o Prestador de Serviço com sucesso!!!",
+                {
+                  duration: 4000,
+                  position: "top-center",
+                }
+              );
+            },
+            (error) => {
+              toast.error(`${error} ao enviar o Email`, {
+                duration: 4000,
+                position: "top-center",
+              });
+            }
+          );
+      } catch (error) {
+        toast.error("Erro ao enviar o Email", {
+          duration: 4000,
+          position: "top-center",
+        });
+      }
+    } else {
+      toast.error(`Entre em uma conta para poder enviar uma proposta`, {
+        duration: 4000,
+        position: "top-center",
+      });
+      setTimeout(() => {
+        navigate("/entrar");
+      }, 2000);
+    }
+  };
 
   return (
     <>
@@ -107,7 +185,7 @@ export default function Vaga() {
               value={mensagem}
               onChange={(e) => setMensagem(e.target.value)}
             />
-            <input type="submit" value="Enviar" />
+            <input type="submit" value="Enviar" onClick={enviarEmail} />
           </div>
         </div>
       </section>

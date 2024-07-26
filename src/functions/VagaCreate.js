@@ -19,6 +19,7 @@ export const VagaCreate = async (
       preco,
       IdUsuario: userId,
       nomeUsuario: user.displayName,
+      email: user.email,
     });
   } catch (error) {
     return error;

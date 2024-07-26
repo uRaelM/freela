@@ -48,15 +48,10 @@ export default function Dashboards() {
             </span>{" "}
             que você precisa agora mesmo
           </h1>
-          <input
-            type="text"
-            name="search"
-            placeholder="Pesquise por qualquer serviço"
-          />
         </div>
       </section>
 
-      <h1 className="cardstext">Os mais procurados</h1>
+      <h1 className="cardstext">Áreas</h1>
 
       <section id="cards">
         <div
